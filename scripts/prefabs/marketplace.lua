@@ -20,41 +20,7 @@ local prefabs =
 }
 
 local function OnGetItemFromPlayer(inst, giver, item)
-    if item.prefab == "goldnugget" then
-	
-	-- do in here whatever you want when gold is given
-	
-	
-        inst.AnimState:PlayAnimation("cointoss")
-        inst.AnimState:PushAnimation("happy")
-        inst.AnimState:PushAnimation("idle", true)
-        inst:DoTaskInTime(20/30, function() 
-            inst.SoundEmitter:PlaySound("dontstarve/pig/PigKingThrowGold")
-            
-           
-                local nug = SpawnPrefab("goldnugget")
-                local pt = Vector3(inst.Transform:GetWorldPosition()) + Vector3(0,4.5,0)
-                
-                nug.Transform:SetPosition(pt:Get())
-                local down = TheCamera:GetDownVec()
-                local angle = math.atan2(down.z, down.x) + (math.random()*60-30)*DEGREES
-                --local angle = (-TUNING.CAM_ROT-90 + math.random()*60-30)/180*PI
-                local sp = math.random()*4+2
-                nug.Physics:SetVel(sp*math.cos(angle), math.random()*2+8, sp*math.sin(angle))
-
-        end)
-        inst:DoTaskInTime(1.5, function() 
-            inst.SoundEmitter:PlaySound("dontstarve/pig/PigKingHappy")
-        end)
-        inst.happy = true
-        if inst.endhappytask then
-            inst.endhappytask:Cancel()
-        end
-        inst.endhappytask = inst:DoTaskInTime(5, function()
-            inst.happy = false
-            inst.endhappytask = nil
-        end)
-    end
+ print("get item from player")
 end
 
 local function onopen(inst)
@@ -150,3 +116,4 @@ end
 
 return Prefab( "common/objects/marketplace", fn, assets, prefabs),
 MakePlacer("common/objects/marketplace_placer", "marketplace", "marketplace", "idle")
+	
