@@ -48,6 +48,19 @@ local function cantakeitem(inst, item, slot)
 	return item.prefab == "goldnugget"
 end
 
+
+local function onhammered(inst, worker)
+	inst.components.lootdropper:DropLoot()
+	inst.components.container:DropEverything()
+	SpawnPrefab("collapse_small").Transform:SetPosition(inst.Transform:GetWorldPosition())
+	inst:Remove()
+end
+
+local function onhit(inst, worker)
+	inst.components.container:Close()
+end
+
+
 local function fn(Sim)
     
 	local inst = CreateEntity()
@@ -66,7 +79,7 @@ local function fn(Sim)
     MakeObstaclePhysics(inst, 2, .5)
     --inst.Transform:SetScale(1.5,1.5,1.5)
     
-    inst:AddTag("king")
+    inst:AddTag("structure")
     inst.AnimState:SetBank("Pig_King")
     inst.AnimState:SetBuild("Pig_King")
     inst.AnimState:PlayAnimation("idle", true)
@@ -99,6 +112,23 @@ local function fn(Sim)
     inst.components.trader.onaccept = OnGetItemFromPlayer
     inst.components.trader.onrefuse = OnRefuseItem
 
+	inst:AddComponent("lootdropper")
+	inst:AddComponent("workable")
+	inst.components.workable:SetWorkAction(ACTIONS.HAMMER)
+	inst.components.workable:SetWorkLeft(2)
+	inst.components.workable:SetOnFinishCallback(onhammered)
+	inst.components.workable:SetOnWorkCallback(onhit) 
+	
+	if IsDLCEnabled(REIGN_OF_GIANTS) == "enabled" then 
+		MakeLargeBurnable(inst, nil, nil, true)
+		MakeLargePropagator(inst)
+
+		inst.OnSave = onsave 
+		inst.OnLoad = onload
+	end
+	
+	
+	
 	inst:ListenForEvent( "nighttime", function(global, data)  
         inst.components.trader:Disable()
         inst.AnimState:PlayAnimation("sleep_pre")
@@ -111,6 +141,9 @@ local function fn(Sim)
         inst.AnimState:PushAnimation("idle", true)    
     end, GetWorld())
     
+	
+	
+	
     return inst
 end
 

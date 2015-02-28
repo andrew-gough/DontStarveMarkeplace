@@ -4,8 +4,8 @@ author = "Teh Scot"
 version = "0.1"
 forumthread = "N/A"
 api_version = 6
-icon_atlas = "modicon.xml"
-icon = "modicon.tex"
+icon_atlas = "iconImage.xml"
+icon = "iconImage.tex"
 dont_starve_compatible = true
 reign_of_giants_compatible = true
 
