@@ -1,5 +1,5 @@
 require "prefabutil"
-
+local screen
 local assets=
 {
 	Asset("ANIM", "anim/pig_king.zip"),
@@ -24,10 +24,17 @@ local function OnGetItemFromPlayer(inst, giver, item)
 end
 
 local function onopen(inst)
+	screen = TMIScreen()
+	TheFrontEnd:PushScreen(screen)
 	--stuff when chest is being opened
 end
 
 local function onclose(inst)
+	if screen == nil then
+	
+	else
+	screen:Accept()
+	end
 	-- stuff when chest is being closed
 end
 

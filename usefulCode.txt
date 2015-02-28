@@ -1,3 +1,4 @@
+
 To test if RoG is installed!
 
 if GLOBAL.IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS) then 
