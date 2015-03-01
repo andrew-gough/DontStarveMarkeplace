@@ -38,23 +38,11 @@ local function onclose(inst)
 	-- stuff when chest is being closed
 end
 
-local function OnRefuseItem(inst, giver, item)
-	inst.SoundEmitter:PlaySound("dontstarve/pig/PigKingReject")
-    inst.AnimState:PlayAnimation("unimpressed")
-	inst.AnimState:PushAnimation("idle", true)
-	inst.happy = false
-end
 
-local function ShouldAcceptItem(inst, item)
-	
-	if item.prefab == "goldnugget" then
-		return true
-	end
-end
 
 local function cantakeitem(inst, item, slot)
-
-	return item.prefab == "goldnugget"
+	return false;
+	-- return item.prefab == "goldnugget"
 end
 
 
@@ -115,13 +103,10 @@ local function fn(Sim)
 	inst.components.container.acceptsstacks = true
 	inst.components.container.type = "market"
 	inst.components.container.itemtestfn = cantakeitem
-	inst.components.container.widgetpos = Vector3(-400,0,0)
+	inst.components.container.widgetpos = Vector3(-40000,0,0)
 	
 	
-    inst:AddComponent("trader")
-	inst.components.trader:SetAcceptTest(ShouldAcceptItem)
-    inst.components.trader.onaccept = OnGetItemFromPlayer
-    inst.components.trader.onrefuse = OnRefuseItem
+
 
 	inst:AddComponent("lootdropper")
 	inst:AddComponent("workable")
@@ -141,13 +126,11 @@ local function fn(Sim)
 	
 	
 	inst:ListenForEvent( "nighttime", function(global, data)  
-        inst.components.trader:Disable()
         inst.AnimState:PlayAnimation("sleep_pre")
         inst.AnimState:PushAnimation("sleep_loop", true)    
     end, GetWorld())
     
 	inst:ListenForEvent( "daytime", function(global, data)
-        inst.components.trader:Enable()
         inst.AnimState:PlayAnimation("sleep_pst")
         inst.AnimState:PushAnimation("idle", true)    
     end, GetWorld())

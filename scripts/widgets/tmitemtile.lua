@@ -3,6 +3,7 @@ local Image = require "widgets/image"
 local Widget = require "widgets/widget"
 local UIAnim = require "widgets/uianim"
 
+
 local ItemTile = Class(Widget, function(self, invitem)
     Widget._ctor(self, "ItemTile")
     self.item = invitem
@@ -28,7 +29,7 @@ local ItemTile = Class(Widget, function(self, invitem)
 	
     self.image = self:AddChild(Image(invitem.components.inventoryitem:GetAtlas(), invitem.components.inventoryitem:GetImage()))
     --self.image:SetClickable(false)
-
+	
 --    local owner = self.item.components.inventoryitem.owner
 --    
 --    if self.item.prefab == "spoiled_food" or (self.item.components.edible and self.item.components.perishable) then
@@ -91,7 +92,16 @@ local ItemTile = Class(Widget, function(self, invitem)
 --    if invitem.components.armor then
 --        self:SetPercent(invitem.components.armor:GetPercent())
 --    end
-    
+	
+	
+	local itemData = (GetModConfigData(invitem.prefab, KnownModIndex:GetModActualName("Pigman Marketplace")))
+	local goldAmount = 1
+	local itemAmount = 1
+	if itemData ~= "noTrade" then
+		 goldAmount, itemAmount = string.match(itemData, '(%d+)Gfor(%d+)')
+	end
+	
+	self:SetQuantity(itemAmount)
 end)
 
 function ItemTile:OnControl(control, down)
@@ -170,6 +180,7 @@ function ItemTile:OnGainFocus()
 end
 
 function ItemTile:SetQuantity(quantity)
+	print("Quantity function called")
     if not self.quantity then
         self.quantity = self:AddChild(Text(NUMBERFONT, 42))
         self.quantity:SetPosition(2,16,0)

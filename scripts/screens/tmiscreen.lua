@@ -15,9 +15,12 @@ local Widget = require "widgets/widget"
 local Inv = require "widgets/tminventorybar"
 local HoverText = require "widgets/tmihoverer"
 
+
+
 --require "screens/popupdialog"
 
 
+local status = "Buying"
 local text_font = UIFONT--NUMBERFONT
 
 TMIScreen = Class(Screen, function(self, in_game)
@@ -38,11 +41,11 @@ TMIScreen = Class(Screen, function(self, in_game)
     self.inv = self.itemspanel:AddChild(Inv(GetPlayer()))
 	self.inv:SetPosition(-135, 190, 0)
 	
-	--self.closebutton = self.itemspanel:AddChild(ImageButton())
-	--self.closebutton:SetText(STRINGS.UI.OPTIONS.CLOSE)
-    --self.closebutton:SetPosition(0, -188, 0)
-    --self.closebutton:SetScale(0.6)
-    --self.closebutton:SetOnClick( function() self:Accept() end)
+	self.closebutton = self.itemspanel:AddChild(ImageButton())
+	self.closebutton:SetText("Buying")
+    self.closebutton:SetPosition(0, -188, 0)
+    self.closebutton:SetScale(0.6)
+    self.closebutton:SetOnClick( function() self:StatusToggle() end)
 	
 	self.hover = self:AddChild(HoverText(self))
 	self.hover:SetScaleMode(SCALEMODE_PROPORTIONAL)
@@ -59,10 +62,16 @@ function TMIScreen:OnControl(control, down)
     end
 end
 
+function TMIScreen:StatusToggle()
+	if status == "Buying" then
+		status = "Selling"
+	else
+		status = "Buying"
+	end
+	self.closebutton:SetText(status)
+end
 
 function TMIScreen:Accept()
-	print(self)
-	print(self.inv)
 	self.inv:Delete()
 	TheFrontEnd:PopScreen(self)
 end

@@ -9,19 +9,9 @@ PrefabFiles = {"marketplace"}
 		TheSim = GLOBAL.TheSim
 		
 		
-		TMIKeyHandler = Class(function(self)   
-		self.handler = TheInput:AddKeyHandler(function(key, down) self:OnRawKey(key, down) end )
-		end)
-
-		function TMIKeyHandler:OnRawKey(key, down)
-			if IsHUDPaused() or not GetPlayer() then return end
 	
-			if (key == GLOBAL.KEY_T and not down) then
-				GLOBAL.TheFrontEnd:PushScreen(GLOBAL.TMIScreen())
-			end
-		end
 
-		CJBTMIKeyHandler = TMIKeyHandler()
+
 		
 		-- TMI Code Ends Here
 		
@@ -66,4 +56,3 @@ PrefabFiles = {"marketplace"}
 				-- this recipe for hard
 			end
 		end
-	
