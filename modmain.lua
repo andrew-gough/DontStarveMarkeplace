@@ -25,6 +25,9 @@ PrefabFiles = {"marketplace"}
 		
 		-- TMI Code Ends Here
 		
+		--Allows the config options to be read anywhere this environment is loaded (Isn't working)
+		--GLOBAL.package.loaded["marketplace.modenv"] = env
+		
 		STRINGS = GLOBAL.STRINGS
         RECIPETABS = GLOBAL.RECIPETABS
         Recipe = GLOBAL.Recipe

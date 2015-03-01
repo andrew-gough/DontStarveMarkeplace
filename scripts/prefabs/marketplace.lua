@@ -46,12 +46,14 @@ local function OnRefuseItem(inst, giver, item)
 end
 
 local function ShouldAcceptItem(inst, item)
+	
 	if item.prefab == "goldnugget" then
 		return true
 	end
 end
 
 local function cantakeitem(inst, item, slot)
+
 	return item.prefab == "goldnugget"
 end
 
@@ -105,13 +107,15 @@ local function fn(Sim)
 	-- will need to change this for when the buying mechanic is in
 	
 	
-	inst.components.container.widgetanimbank = "ui_chest_3x3"
-	inst.components.container.widgetanimbuild = "ui_chest_3x3"
-	inst.components.container.widgetpos = Vector3(0,200,0)
+	--inst.components.container.widgetanimbank = "ui_chest_3x3"
+	--inst.components.container.widgetanimbuild = "ui_chest_3x3"
+	inst.components.container.widgetbgimage = "images/transparent.tex"
+    inst.components.container.widgetbgatlas = "images/transparent.xml"
 	inst.components.container.side_align_tip = 160	
 	inst.components.container.acceptsstacks = true
 	inst.components.container.type = "market"
 	inst.components.container.itemtestfn = cantakeitem
+	inst.components.container.widgetpos = Vector3(-400,0,0)
 	
 	
     inst:AddComponent("trader")
