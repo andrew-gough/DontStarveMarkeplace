@@ -24,7 +24,7 @@ local function OnGetItemFromPlayer(inst, giver, item)
 end
 
 local function onopen(inst)
-	screen = TMIScreen(GetPlayer())
+	screen = MarketScreen(GetPlayer())
 	TheFrontEnd:PushScreen(screen)
 	--stuff when chest is being opened
 end

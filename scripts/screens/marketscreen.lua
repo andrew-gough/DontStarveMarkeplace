@@ -12,8 +12,8 @@ local UIAnim = require "widgets/uianim"
 local Spinner = require "widgets/spinner"
 local NumericSpinner = require "widgets/numericspinner"
 local Widget = require "widgets/widget"
-local Inv = require "widgets/tminventorybar"
-local HoverText = require "widgets/tmihoverer"
+local Inv = require "widgets/marketinventorybar"
+local HoverText = require "widgets/markethoverer"
 
 
 
@@ -23,9 +23,9 @@ local HoverText = require "widgets/tmihoverer"
 local status = "Buying"
 local text_font = UIFONT--NUMBERFONT
 
-TMIScreen = Class(Screen, function(self, in_game,owner)
-	--Screen._ctor(self, "TMIScreen")
-	Widget._ctor(self, "TMIScreen")
+MarketScreen = Class(Screen, function(self, in_game,owner)
+	--Screen._ctor(self, "MarketScreen")
+	Widget._ctor(self, "MarketScreen")
 	self.in_game = in_game
 	self.owner = owner
 	
@@ -55,8 +55,8 @@ TMIScreen = Class(Screen, function(self, in_game,owner)
 end)
 
 
-function TMIScreen:OnControl(control, down)
-    if TMIScreen._base.OnControl(self, control, down) then return true end
+function MarketScreen:OnControl(control, down)
+    if MarketScreen._base.OnControl(self, control, down) then return true end
     
     if (control == CONTROL_PAUSE or control == CONTROL_CANCEL) and not down then
 		self:Accept()
@@ -64,11 +64,11 @@ function TMIScreen:OnControl(control, down)
     end
 end
 
-function TMIScreen:isBuying()
+function MarketScreen:isBuying()
 	return status == "Buying" 
 end
 
-function TMIScreen:StatusToggle()
+function MarketScreen:StatusToggle()
 	if status == "Buying" then
 		status = "Selling"
 	else
@@ -77,18 +77,18 @@ function TMIScreen:StatusToggle()
 	self.closebutton:SetText(status)
 end
 
-function TMIScreen:Accept()
+function MarketScreen:Accept()
 	self.inv:Delete()
 	TheFrontEnd:PopScreen(self)
 end
 
-function TMIScreen:OnUpdate(dt)
+function MarketScreen:OnUpdate(dt)
 	self.hover:Update()
 	self.inv:Update(dt)
 end
 
 
-function TMIScreen:UpdateMenu()
+function MarketScreen:UpdateMenu()
 	self.menu:Clear()
 	self.menu:AddItem(STRINGS.UI.OPTIONS.CLOSE, function() self:Accept() end)
 end

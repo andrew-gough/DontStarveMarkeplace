@@ -1,7 +1,7 @@
 PrefabFiles = {"marketplace"}
 		-- Code from TMI Items
 	
-		GLOBAL.require 'screens.tmiscreen'
+		GLOBAL.require 'screens.marketscreen'
 		IsHUDPaused = GLOBAL.IsPaused
 		TheInput = GLOBAL.TheInput
 		TheFrontEnd = GLOBAL.TheFrontEnd

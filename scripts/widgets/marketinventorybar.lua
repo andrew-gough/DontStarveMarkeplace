@@ -1,17 +1,15 @@
 
---Access the marketplace modmain
---local modenv = require "marketplace.modenv" (Isn't working)
 require "class"
 require "itemlist"
 
 
  
-local inventory = require("components/tminventory")
-local InvSlot = require "widgets/tminvslot"
+local inventory = require("components/marketinventory")
+local InvSlot = require "widgets/marketinvslot"
 local TileBG = require "widgets/tilebg"
 local Image = require "widgets/image"
 local Widget = require "widgets/widget"
-local ItemTile = require "widgets/tmitemtile"
+local ItemTile = require "widgets/marketitemtile"
 local Text = require "widgets/text"
 local AnimButton = require "widgets/animbutton"
 local TextButton = require "widgets/textbutton"
@@ -23,7 +21,6 @@ local MAX_ROWS = 8
 local MAXSLOTS = NUM_COLUMS * MAX_ROWS
 
 
--- to get modconfig use modenv.GetModConfigData("tagHere")
 
 
 local Inv = Class(Widget, function(self, owner)
