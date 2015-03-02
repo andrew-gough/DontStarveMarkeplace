@@ -2,12 +2,15 @@ local Text = require "widgets/text"
 local Image = require "widgets/image"
 local Widget = require "widgets/widget"
 local UIAnim = require "widgets/uianim"
+local goldAmount
+local itemAmount
 
-
-local ItemTile = Class(Widget, function(self, invitem)
+local ItemTile = Class(Widget, function(self, invitem,owner)
     Widget._ctor(self, "ItemTile")
     self.item = invitem
-
+	self.owner = owner
+	self.goldAmount = 1
+	self.itemAmount = 1
 	-- NOT SURE WAHT YOU WANT HERE
 	if invitem.components.inventoryitem == nil then
 		print("NO INVENTORY ITEM COMPONENT"..tostring(invitem.prefab), invitem, owner)
@@ -94,14 +97,15 @@ local ItemTile = Class(Widget, function(self, invitem)
 --    end
 	
 	
-	local itemData = (GetModConfigData(invitem.prefab, KnownModIndex:GetModActualName("Pigman Marketplace")))
-	local goldAmount = 1
-	local itemAmount = 1
+	local itemData = (GetModConfigData(invitem.prefab, KnownModIndex:GetModActualName("Pigman Marketplace"))) or "noTrade"
+
 	if itemData ~= "noTrade" then
-		 goldAmount, itemAmount = string.match(itemData, '(%d+)Gfor(%d+)')
+		 self.goldAmount, self.itemAmount = string.match(itemData, '(%d+)Gfor(%d+)')
 	end
 	
-	self:SetQuantity(itemAmount)
+	print("Item: "..invitem.prefab.." Cost: "..self.goldAmount.." For "..self.itemAmount)
+	
+	self:SetQuantity(self.itemAmount)
 end)
 
 function ItemTile:OnControl(control, down)
@@ -117,7 +121,9 @@ end
 function ItemTile:GetDescriptionString()
     local str = nil
     local in_equip_slot = self.item and self.item.components.equippable and self.item.components.equippable:IsEquipped()
-    local active_item = GetPlayer().components.inventory:GetActiveItem()
+
+	
+	local active_item = self.owner.components.inventory:GetActiveItem()
     if self.item and self.item.components.inventoryitem then
 
         local adjective = self.item:GetAdjective()
@@ -170,7 +176,12 @@ function ItemTile:GetDescriptionString()
 --            end
 --        end
     end
-    
+	--print(goldAmount)
+	if goldAmount == "1" then
+	str = str.." (Costs "..self.goldAmount.." Gold Nugget)"
+	else
+	str = str.." (Costs "..self.goldAmount.." Gold Nuggets)"
+	end
     return str or ""
     
 end
@@ -180,7 +191,7 @@ function ItemTile:OnGainFocus()
 end
 
 function ItemTile:SetQuantity(quantity)
-	print("Quantity function called")
+--	print("Quantity function called")
     if not self.quantity then
         self.quantity = self:AddChild(Text(NUMBERFONT, 42))
         self.quantity:SetPosition(2,16,0)

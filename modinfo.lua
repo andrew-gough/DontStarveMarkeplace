@@ -18,9 +18,10 @@ configuration_options =
         {
             {description = "Cheaty", data = "diffCheaty"}, 
             {description = "Easy", data = "diffEasy"},
+			{description = "Medium", data = "diffMedium"},
 			{description = "Hard", data = "diffHard"},
         }, 
-        default = "diffHard",
+        default = "diffMedium",
     },
 	{
 		name = "sellValue",
@@ -40,6 +41,7 @@ configuration_options =
         label = "Cut Grass Trading",
         options = 
         {	
+			{description = "Don't Trade", data = "noTrade"},
 			{description = "1 Gold for 40", data = "1Gfor40"}, 
 			{description = "1 Gold for 20", data = "1Gfor20"}, 
 			{description = "1 Gold for 10", data = "1Gfor10"}, 
@@ -64,6 +66,7 @@ configuration_options =
         label = "Rocks Trading",
         options = 
         {	
+			{description = "Don't Trade", data = "noTrade"},
 			{description = "1 Gold for 40", data = "1Gfor40"}, 
 			{description = "1 Gold for 20", data = "1Gfor20"}, 
 			{description = "1 Gold for 10", data = "1Gfor10"}, 
@@ -88,6 +91,7 @@ configuration_options =
         label = "Sapling Trading",
         options = 
         {	
+			{description = "Don't Trade", data = "noTrade"},
 			{description = "1 Gold for 40", data = "1Gfor40"}, 
 			{description = "1 Gold for 20", data = "1Gfor20"}, 
 			{description = "1 Gold for 10", data = "1Gfor10"}, 
@@ -112,6 +116,7 @@ configuration_options =
         label = "Log Trading",
         options = 
         {	
+			{description = "Don't Trade", data = "noTrade"},
 			{description = "1 Gold for 40", data = "1Gfor40"}, 
 			{description = "1 Gold for 20", data = "1Gfor20"}, 
 			{description = "1 Gold for 10", data = "1Gfor10"}, 

@@ -23,10 +23,12 @@ local HoverText = require "widgets/tmihoverer"
 local status = "Buying"
 local text_font = UIFONT--NUMBERFONT
 
-TMIScreen = Class(Screen, function(self, in_game)
+TMIScreen = Class(Screen, function(self, in_game,owner)
 	--Screen._ctor(self, "TMIScreen")
 	Widget._ctor(self, "TMIScreen")
 	self.in_game = in_game
+	self.owner = owner
+	
     
 	self.root = self:AddChild(Widget("ROOT"))
     self.root:SetVAnchor(ANCHOR_MIDDLE)
@@ -60,6 +62,10 @@ function TMIScreen:OnControl(control, down)
 		self:Accept()
 		return true
     end
+end
+
+function TMIScreen:isBuying()
+	return status == "Buying" 
 end
 
 function TMIScreen:StatusToggle()

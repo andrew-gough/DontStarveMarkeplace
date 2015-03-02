@@ -2,7 +2,6 @@ PrefabFiles = {"marketplace"}
 		-- Code from TMI Items
 	
 		GLOBAL.require 'screens.tmiscreen'
-		GetPlayer = GLOBAL.GetPlayer
 		IsHUDPaused = GLOBAL.IsPaused
 		TheInput = GLOBAL.TheInput
 		TheFrontEnd = GLOBAL.TheFrontEnd
@@ -15,8 +14,7 @@ PrefabFiles = {"marketplace"}
 		
 		-- TMI Code Ends Here
 		
-		--Allows the config options to be read anywhere this environment is loaded (Isn't working)
-		--GLOBAL.package.loaded["marketplace.modenv"] = env
+
 		
 		STRINGS = GLOBAL.STRINGS
         RECIPETABS = GLOBAL.RECIPETABS
@@ -30,7 +28,7 @@ PrefabFiles = {"marketplace"}
 		
         STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARKETPLACE = "Should I say hi?"
 		
-	
+
 		local config_CraftingDifficulty  = GetModConfigData("recipeDifficulty")
 		
 		if config_CraftingDifficulty == "diffCheaty" then
@@ -38,21 +36,29 @@ PrefabFiles = {"marketplace"}
 		local marketplace = Recipe("marketplace",{ Ingredient("cutgrass", 1)},
 		RECIPETABS.TOWN, TECH.NONE,"marketplace_placer")
 		
-		-- Cheaty recipe
+		-- Cheaty recipe (used for debug)
 		
 			else if config_CraftingDifficulty == "diffEasy" then
 		
 		
-				local marketplace = Recipe("marketplace",{ Ingredient("boards", 12),Ingredient("cutStone",9),Ingredient("pigSkin",12)},
-				RECIPETABS.TOWN, TECH.NONE,"marketplace_placer")
+				local marketplace = Recipe("marketplace",{ Ingredient("boards", 6),Ingredient("cutStone",4),Ingredient("pigSkin",6)},
+				RECIPETABS.TOWN,TECH.SCIENCE_TWO,"marketplace_placer")
 		
 				--this recipe for easy
 			
-				else 
+				else if config_CraftingDifficulty == "diffMedium" then
 				
-				local marketplace = Recipe("marketplace",{ Ingredient("boards", 24),Ingredient("cutStone",18),Ingredient("pigSkin",24),Ingredient("goldNugget",10)},
-				RECIPETABS.TOWN, TECH.NONE,"marketplace_placer")
+				local marketplace = Recipe("marketplace",{ Ingredient("boards", 12),Ingredient("cutStone",9),Ingredient("pigSkin",12)},
+				RECIPETABS.TOWN,TECH.SCIENCE_TWO,"marketplace_placer")
 				
-				-- this recipe for hard
+				-- this recipe for medium
+				
+				else
+				
+					local marketplace = Recipe("marketplace",{ Ingredient("boards", 24),Ingredient("cutStone",18),Ingredient("pigSkin",24),Ingredient("goldNugget",10)},
+					RECIPETABS.TOWN,TECH.SCIENCE_TWO,"marketplace_placer")
+				
+					-- this recipe for hard
+				end
 			end
 		end

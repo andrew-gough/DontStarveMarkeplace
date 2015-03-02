@@ -33,7 +33,7 @@ end
 
 
 function InvSlot:Click(stack_mod)
-    local character = GetPlayer()
+    local character = self.owner
     local slot_number = self.num
     local container = self.container
     local container_item = container[slot_number]
@@ -51,12 +51,23 @@ function InvSlot:Click(stack_mod)
 	--the cost of the item stack in gold; will get this from config
 	local goldCostOfItems = tonumber(goldAmount)
 	
+	--print("Item: "..container_item.prefab.." Cost: "..goldCostOfItems.." For "..numberToSpawn)
 	--Check if character has (1) gold
 	local repeating = 1;
+	if stack_mod then
+				
+		if goldCostOfItems == 1 then				
+			character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget.")
+		else
+			character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets.")
+		end
+	else
+
 	if character.components.inventory:Has("goldnugget", goldCostOfItems) then
 		--Character loses (1) gold
+
 		character.components.inventory:ConsumeByName("goldnugget",goldCostOfItems)
-		
+
 		-- TMI code here
 		
 		if container_item then
@@ -68,10 +79,11 @@ function InvSlot:Click(stack_mod)
 				end
 			if loot then
 				
-				
-					if stack_mod and loot.components.stackable then
-						loot.components.stackable.stacksize = 10
-					end
+					--On Right Click
+					if stack_mod then
+
+					else
+					--On Left Click
 	
 					local pt = Point(character.Transform:GetWorldPosition())
 	        
@@ -104,7 +116,7 @@ function InvSlot:Click(stack_mod)
 								end
 							end)
 						end
-					
+					end
 				return loot
 			end
 		
@@ -148,7 +160,7 @@ function InvSlot:Click(stack_mod)
 	
 	 character.components.talker:Say("I need gold nuggets.")
 	end
-    
+    end
     
     character.SoundEmitter:PlaySound("dontstarve/HUD/click_object")
     

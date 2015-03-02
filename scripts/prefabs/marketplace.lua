@@ -24,7 +24,7 @@ local function OnGetItemFromPlayer(inst, giver, item)
 end
 
 local function onopen(inst)
-	screen = TMIScreen()
+	screen = TMIScreen(GetPlayer())
 	TheFrontEnd:PushScreen(screen)
 	--stuff when chest is being opened
 end
@@ -49,7 +49,7 @@ end
 local function onhammered(inst, worker)
 	inst.components.lootdropper:DropLoot()
 	inst.components.container:DropEverything()
-	SpawnPrefab("collapse_small").Transform:SetPosition(inst.Transform:GetWorldPosition())
+	SpawnPrefab("collapse_big").Transform:SetPosition(inst.Transform:GetWorldPosition())
 	inst:Remove()
 end
 
@@ -73,7 +73,7 @@ local function fn(Sim)
 	inst.entity:AddDynamicShadow()
 	inst.DynamicShadow:SetSize( 10, 5 )
     
-    MakeObstaclePhysics(inst, 2, .5)
+    MakeObstaclePhysics(inst, 1)
     --inst.Transform:SetScale(1.5,1.5,1.5)
     
     inst:AddTag("structure")
@@ -95,10 +95,8 @@ local function fn(Sim)
 	-- will need to change this for when the buying mechanic is in
 	
 	
-	--inst.components.container.widgetanimbank = "ui_chest_3x3"
-	--inst.components.container.widgetanimbuild = "ui_chest_3x3"
-	inst.components.container.widgetbgimage = "images/transparent.tex"
-    inst.components.container.widgetbgatlas = "images/transparent.xml"
+	inst.components.container.widgetanimbank = "ui_chest_3x3"
+	inst.components.container.widgetanimbuild = "ui_chest_3x3"
 	inst.components.container.side_align_tip = 160	
 	inst.components.container.acceptsstacks = true
 	inst.components.container.type = "market"
@@ -111,7 +109,7 @@ local function fn(Sim)
 	inst:AddComponent("lootdropper")
 	inst:AddComponent("workable")
 	inst.components.workable:SetWorkAction(ACTIONS.HAMMER)
-	inst.components.workable:SetWorkLeft(2)
+	inst.components.workable:SetWorkLeft(5)
 	inst.components.workable:SetOnFinishCallback(onhammered)
 	inst.components.workable:SetOnWorkCallback(onhit) 
 	

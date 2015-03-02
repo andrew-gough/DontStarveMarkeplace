@@ -38,6 +38,7 @@ local Inv = Class(Widget, function(self, owner)
 	self.selected_scale = .8
     self:SetScale(self.base_scale)
     
+	-- resets all tiles
     if self.inv then
 	    for k,v in pairs(self.inv) do
 			v:SetTile(nil)
@@ -47,30 +48,43 @@ local Inv = Class(Widget, function(self, owner)
     self.inv = {}
     
     local strItems = {}
-    
+    -- pulls in new items from the itemlist which arn't blueprints
     for k,v in pairs(ITEMLIST) do 
     	if not contains(strItems, v) and not string.find(v, "blueprint") then
-    		table.insert(strItems, v)
+			if(GetModConfigData(v, KnownModIndex:GetModActualName("Pigman Marketplace"))) == "noTrade" then
+				--Item is disabled in config
+			else
+				--Item is enabled in config
+				table.insert(strItems, v)
+			end
     	end
     end
     
+	
+	-- for all the items, turn them from a string into the prefab in the self.inventory table
     local i = 0
 	for k,v in pairs(strItems) do
 	
 			local item = SpawnPrefab(v)
 			if item ~= nil then
-				print(item)
+				--print(item)
 				if item.components and item.components.inventoryitem then
 					self.inventory[i] = item
+		
 					i = i + 1
 				else
 					item:Remove()
 				end
 			end
     end
+	
+	
+
+    --Sort table alphabetically
+    --table.sort(self.inventory, function(a,b) return a:GetDisplayName() < b:GetDisplayName() end)
     
-    table.sort(self.inventory, function(a,b) return a:GetDisplayName() < b:GetDisplayName() end)
-    
+	
+	
     self.menu = self:AddChild(Widget("MENU"))
 	self.menu:SetPosition(225, -0, 0)
 
@@ -124,18 +138,20 @@ function Inv:Rebuild()
     local maxwidth = (W * NUM_COLUMS)
 	
 	local positions = 0
-    for k = self.currentpage * MAXSLOTS, math.min(num_slots-1, (self.currentpage + 1) * MAXSLOTS - 1) do
+    for k = self.currentpage * MAXSLOTS, math.min(num_slots-1, (self.currentpage + 1) * MAXSLOTS - 1)+1 do
     	local height = math.floor(positions / NUM_COLUMS) * H
         local slot = InvSlot(k, HUD_ATLAS, "inv_slot.tex", self.owner, self.inventory)
         self.inv[k] = self.slots:AddChild(slot)
-		self.inv[k]:SetTile(ItemTile(self.inventory[k]))
+		self.inv[k]:SetTile(ItemTile(self.inventory[k],self.owner))
         
         local remainder = positions % NUM_COLUMS
         local row = math.floor(positions / NUM_COLUMS) * H
 
         local x = W * remainder
         slot:SetPosition(x,-row,0)
+		--print(x,-row,0)
         positions = positions + 1
+		--print(k)
     end
 
 	self.rebuild_pending = false
@@ -170,7 +186,7 @@ function Inv:Refresh()
 
 	for k,v in pairs(self.inventory) do
 		if v then
-			local tile = ItemTile(v, self)
+			local tile = ItemTile(v, self,self.owner)
 			if (self.inv[k]) then	
 				self.inv[k]:SetTile(tile)
 			end
