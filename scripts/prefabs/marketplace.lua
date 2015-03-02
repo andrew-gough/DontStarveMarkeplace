@@ -1,5 +1,12 @@
 require "prefabutil"
 local screen
+local pigHouses = 0
+local PIGHOUSERADIUS = 100    
+
+STRINGS.NAMES.MARKETPLACE = "Marketplace"
+STRINGS.RECIPE_DESC.MARKETPLACE = "The pigman market!"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARKETPLACE = "Should I say hi?"
+
 local assets=
 {
 	Asset("ANIM", "anim/pig_king.zip"),
@@ -14,20 +21,33 @@ for y = 2, 0, -1 do
 	end
 end
 
+
 local prefabs = 
 {
 	"goldnugget",
 }
 
 local function OnGetItemFromPlayer(inst, giver, item)
- print("get item from player")
+ --print("get item from player")
 end
 
 local function onopen(inst)
-	screen = MarketScreen(GetPlayer())
-	TheFrontEnd:PushScreen(screen)
+	local player = GetPlayer()
+	updatePigHouses(inst)
+	--print("Pig Houses : "..pigHouses)
+	if (pigHouses >=  tonumber(GetModConfigData("pigHouse", KnownModIndex:GetModActualName("Pigman Marketplace")))) then
+		screen = MarketScreen(player)
+		TheFrontEnd:PushScreen(screen)
+	else if pigHouses == 0 then
+				player.components.talker:Say("I think he needs friends.")
+			else
+				player.components.talker:Say("I think he needs more friends.")
+		end
+	end
 	--stuff when chest is being opened
 end
+
+
 
 local function onclose(inst)
 	if screen == nil then
@@ -57,6 +77,17 @@ local function onhit(inst, worker)
 	inst.components.container:Close()
 end
 
+function updatePigHouses(inst)
+	pigHouses = 0
+		local pt = Vector3(inst.Transform:GetWorldPosition())
+		local entities = TheSim:FindEntities(pt.x,pt.y,pt.z, PIGHOUSERADIUS)
+		--print("Number of Entities"..#entities)
+		for k,v in pairs(entities) do
+			if v.prefab == "pighouse" then
+				pigHouses = pigHouses + 1
+			end
+		end
+end
 
 local function fn(Sim)
     
@@ -73,7 +104,7 @@ local function fn(Sim)
 	inst.entity:AddDynamicShadow()
 	inst.DynamicShadow:SetSize( 10, 5 )
     
-    MakeObstaclePhysics(inst, 1)
+    MakeObstaclePhysics(inst, 1.5)
     --inst.Transform:SetScale(1.5,1.5,1.5)
     
     inst:AddTag("structure")

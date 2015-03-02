@@ -28,13 +28,28 @@ configuration_options =
         label = "Selling Value",
         options = 
         {
-            {description = "100% of Buying", data = "sell100"}, 
-            {description = "75% of Buying", data = "sell75"},
-			{description = "50% of Buying", data = "sell50"},
-			{description = "25% of Buying", data = "sell25"},
-			{description = "Disable Selling", data = "sell0"},
+            {description = "100% of Buying", data = "1"}, 
+            {description = "75% of Buying", data = "0.75"},
+			{description = "50% of Buying", data = "0.5"},
+			{description = "25% of Buying", data = "0.25"},
+			{description = "Disable Selling", data = "0"},
         }, 
-        default = "sell50",
+        default = "0.5",
+    },
+	{
+		name = "pigHouse",
+        label = "Required Pig Houses",
+        options = 
+        {
+            {description = "None Required", data = "0"}, 
+			{description = "2", data = "2"}, 
+			{description = "4", data = "4"}, 
+			{description = "6", data = "6"}, 
+			{description = "8", data = "8"}, 
+			{description = "10", data = "10"}, 
+            
+        }, 
+        default = "6",
     },
 	{
 		name = "cutgrass",

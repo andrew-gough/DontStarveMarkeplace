@@ -20,7 +20,7 @@ local HoverText = require "widgets/markethoverer"
 --require "screens/popupdialog"
 
 
-local status = "Buying"
+local status = "Selling"
 local text_font = UIFONT--NUMBERFONT
 
 MarketScreen = Class(Screen, function(self, in_game,owner)
@@ -40,11 +40,11 @@ MarketScreen = Class(Screen, function(self, in_game,owner)
 	self.itemspanel:SetScale(1,1,1)
 	self.itemspanel:SetPosition(-380,0,0)
        
-    self.inv = self.itemspanel:AddChild(Inv(GetPlayer()))
+    self.inv = self.itemspanel:AddChild(Inv(GetPlayer(),self))
 	self.inv:SetPosition(-135, 190, 0)
 	
 	self.closebutton = self.itemspanel:AddChild(ImageButton())
-	self.closebutton:SetText("Buying")
+	self.closebutton:SetText("Selling")
     self.closebutton:SetPosition(0, -188, 0)
     self.closebutton:SetScale(0.6)
     self.closebutton:SetOnClick( function() self:StatusToggle() end)
@@ -64,17 +64,25 @@ function MarketScreen:OnControl(control, down)
     end
 end
 
-function MarketScreen:isBuying()
-	return status == "Buying" 
+
+
+function MarketScreen:isSelling()
+	return status == "Selling"
 end
 
 function MarketScreen:StatusToggle()
-	if status == "Buying" then
-		status = "Selling"
-	else
+
+	if status == "Selling" then
+		if(GetModConfigData("sellValue", KnownModIndex:GetModActualName("Pigman Marketplace"))) == "0" then
+			GetPlayer().components.talker:Say("They don't want my goods")
+		else
 		status = "Buying"
+		end
+	else
+		status = "Selling"
 	end
 	self.closebutton:SetText(status)
+	self.inv:Refresh()
 end
 
 function MarketScreen:Accept()

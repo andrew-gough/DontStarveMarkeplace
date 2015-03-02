@@ -1,6 +1,6 @@
 
 require "class"
-require "itemlist"
+require "marketitemlist"
 
 
  
@@ -23,7 +23,7 @@ local MAXSLOTS = NUM_COLUMS * MAX_ROWS
 
 
 
-local Inv = Class(Widget, function(self, owner)
+local Inv = Class(Widget, function(self, owner, screen)
 	Widget._ctor(self, "Inventory")
 	
 	self.slots = self:AddChild(Widget("SLOTS"))
@@ -31,6 +31,7 @@ local Inv = Class(Widget, function(self, owner)
 	self.maxpages = 0
 	self.currentpage = 0
     self.owner = owner
+	self.screen = screen
 	self.base_scale = .6
 	self.selected_scale = .8
     self:SetScale(self.base_scale)
@@ -46,7 +47,7 @@ local Inv = Class(Widget, function(self, owner)
     
     local strItems = {}
     -- pulls in new items from the itemlist which arn't blueprints
-    for k,v in pairs(ITEMLIST) do 
+    for k,v in pairs(MARKETITEMLIST) do 
     	if not contains(strItems, v) and not string.find(v, "blueprint") then
 			if(GetModConfigData(v, KnownModIndex:GetModActualName("Pigman Marketplace"))) == "noTrade" then
 				--Item is disabled in config
@@ -137,9 +138,9 @@ function Inv:Rebuild()
 	local positions = 0
     for k = self.currentpage * MAXSLOTS, math.min(num_slots-1, (self.currentpage + 1) * MAXSLOTS - 1)+1 do
     	local height = math.floor(positions / NUM_COLUMS) * H
-        local slot = InvSlot(k, HUD_ATLAS, "inv_slot.tex", self.owner, self.inventory)
+        local slot = InvSlot(k, HUD_ATLAS, "inv_slot.tex", self.owner, self.inventory,self.screen)
         self.inv[k] = self.slots:AddChild(slot)
-		self.inv[k]:SetTile(ItemTile(self.inventory[k],self.owner))
+		self.inv[k]:SetTile(ItemTile(self.inventory[k],self.owner,self.screen,self.screen))
         
         local remainder = positions % NUM_COLUMS
         local row = math.floor(positions / NUM_COLUMS) * H
@@ -183,7 +184,7 @@ function Inv:Refresh()
 
 	for k,v in pairs(self.inventory) do
 		if v then
-			local tile = ItemTile(v, self,self.owner)
+			local tile = ItemTile(self.inventory[k],self.owner,self.screen,self.screen)
 			if (self.inv[k]) then	
 				self.inv[k]:SetTile(tile)
 			end

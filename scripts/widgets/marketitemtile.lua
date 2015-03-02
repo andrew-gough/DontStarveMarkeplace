@@ -5,10 +5,11 @@ local UIAnim = require "widgets/uianim"
 local goldAmount
 local itemAmount
 
-local ItemTile = Class(Widget, function(self, invitem,owner)
+local ItemTile = Class(Widget, function(self, invitem,owner,screen)
     Widget._ctor(self, "ItemTile")
     self.item = invitem
 	self.owner = owner
+	self.screen = screen
 	self.goldAmount = 1
 	self.itemAmount = 1
 	-- NOT SURE WAHT YOU WANT HERE
@@ -22,10 +23,16 @@ local ItemTile = Class(Widget, function(self, invitem,owner)
 --	self.bg:Hide()
 --	self.bg:SetClickable(false)
 --	
---	self.spoilage = self:AddChild(UIAnim())
---	
---    self.spoilage:GetAnimState():SetBank("spoiled_meter")
---    self.spoilage:GetAnimState():SetBuild("spoiled_meter")
+
+	print(self.screen)
+	if self.screen:isSelling() then
+
+	self.spoilage = self:AddChild(UIAnim())
+	self.spoilage:GetAnimState():SetBank("spoiled_meter")
+	self.spoilage:GetAnimState():SetBuild("spoiled_meter")
+	self.spoilage:Show()
+	self.spoilage:GetAnimState():SetPercent("anim", 0)
+	end
 --    self.spoilage:Hide()
 --    self.spoilage:SetClickable(false)
 	
@@ -177,13 +184,16 @@ function ItemTile:GetDescriptionString()
 --        end
     end
 	--print(goldAmount)
-	if goldAmount == "1" then
-	str = str.." (Costs "..self.goldAmount.." Gold Nugget)"
-	else
-	str = str.." (Costs "..self.goldAmount.." Gold Nuggets)"
+	if self.screen:isSelling() then
+		if goldAmount == "1" then
+		str = str.." (Costs "..self.goldAmount.." Gold Nugget)"
+		else
+		str = str.." (Costs "..self.goldAmount.." Gold Nuggets)"
+		end
+		return str or ""
+    else
+		
 	end
-    return str or ""
-    
 end
 
 function ItemTile:OnGainFocus()
@@ -192,15 +202,17 @@ end
 
 function ItemTile:SetQuantity(quantity)
 --	print("Quantity function called")
-    if not self.quantity then
-        self.quantity = self:AddChild(Text(NUMBERFONT, 42))
-        self.quantity:SetPosition(2,16,0)
-    end
-    self.quantity:SetString(tostring(quantity))
+	if self.screen:isSelling() then
+		if not self.quantity then
+			self.quantity = self:AddChild(Text(NUMBERFONT, 42))
+			self.quantity:SetPosition(2,16,0)
+		end
+	self.quantity:SetString(tostring(quantity))
+	end
 end
 
 function ItemTile:SetPerishPercent(percent)
-	if self.item.components.perishable and self.item.components.edible then
+	if self.item.components.perishable then
 		self.spoilage:GetAnimState():SetPercent("anim", 1-self.item.components.perishable:GetPercent())
 	end
 end

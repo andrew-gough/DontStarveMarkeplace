@@ -1,4 +1,4 @@
-ITEMLIST = {
+MARKETITEMLIST = {
 "cutgrass",
 "rocks",
 "log",

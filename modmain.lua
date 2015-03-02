@@ -1,4 +1,6 @@
-PrefabFiles = {"marketplace"}
+PrefabFiles = {"marketplace","goldfragment"}
+
+
 		-- Code from TMI Items
 	
 		GLOBAL.require 'screens.marketscreen'
@@ -6,9 +8,7 @@ PrefabFiles = {"marketplace"}
 		TheInput = GLOBAL.TheInput
 		TheFrontEnd = GLOBAL.TheFrontEnd
 		TheSim = GLOBAL.TheSim
-		
-		
-	
+
 
 
 		
@@ -22,13 +22,19 @@ PrefabFiles = {"marketplace"}
         Ingredient = GLOBAL.Ingredient
         TECH = GLOBAL.TECH
 
-        STRINGS.NAMES.MARKETPLACE = "Marketplace"
-		
-        STRINGS.RECIPE_DESC.MARKETPLACE = "The pigman market!"
-		
-        STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARKETPLACE = "Should I say hi?"
+		STRINGS.NAMES.GOLDNUGGET = "Gold Nugget"
+		STRINGS.RECIPE_DESC.GOLDNUGGET = "Shiny!"
 		
 
+		local goldfragment = GLOBAL.Recipe("goldfragment",{ Ingredient("goldnugget", 1)},                     
+        RECIPETABS.REFINE, TECH.NONE,nil,nil,nil,4)
+        goldfragment.atlas = "images/inventoryimages/goldfragment.xml"
+
+		
+		local goldnugget = GLOBAL.Recipe("goldnugget",{ Ingredient("goldfragment", 4)},                     
+        RECIPETABS.REFINE, TECH.NONE)
+		
+		
 		local config_CraftingDifficulty  = GetModConfigData("recipeDifficulty")
 		
 		if config_CraftingDifficulty == "diffCheaty" then
