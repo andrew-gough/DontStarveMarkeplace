@@ -24,7 +24,7 @@ local ItemTile = Class(Widget, function(self, invitem,owner,screen)
 --	self.bg:SetClickable(false)
 --	
 
-	print(self.screen)
+	--print(self.screen)
 	if self.screen:isSelling() then
 
 	self.spoilage = self:AddChild(UIAnim())
@@ -185,14 +185,29 @@ function ItemTile:GetDescriptionString()
     end
 	--print(goldAmount)
 	if self.screen:isSelling() then
-		if goldAmount == "1" then
-		str = str.." (Costs "..self.goldAmount.." Gold Nugget)"
+		if self.goldAmount == "1" then
+			str = str.." (Costs "..self.goldAmount.." Gold Nugget)"
 		else
-		str = str.." (Costs "..self.goldAmount.." Gold Nuggets)"
+			str = str.." (Costs "..self.goldAmount.." Gold Nuggets)"
 		end
 		return str or ""
     else
-		
+		local sellValue = self.goldAmount*tonumber(GetModConfigData("sellValue", KnownModIndex:GetModActualName("Pigman Marketplace")))
+		if tonumber(sellValue) == 1 then
+			str = str.." (Sells for "..sellValue.." Gold Nugget)"
+		else
+
+			if math.floor(sellValue) == 0 then
+				str = str.." (Sells for "..((sellValue-math.floor(sellValue))/0.25).." Gold Fragments.)"
+			else
+				if ((sellValue-math.floor(sellValue))/0.25) == 0 then
+					str = str.." (Sells for "..math.floor(sellValue).." Gold Nuggets.)"
+				else
+					str = str.." (Sells for "..math.floor(sellValue).." Gold Nuggets, "..((sellValue-math.floor(sellValue))/0.25).." Gold Fragments.)"
+				end
+			end	
+		end
+		return str or ""
 	end
 end
 
@@ -202,13 +217,13 @@ end
 
 function ItemTile:SetQuantity(quantity)
 --	print("Quantity function called")
-	if self.screen:isSelling() then
+	
 		if not self.quantity then
 			self.quantity = self:AddChild(Text(NUMBERFONT, 42))
 			self.quantity:SetPosition(2,16,0)
 		end
 	self.quantity:SetString(tostring(quantity))
-	end
+	
 end
 
 function ItemTile:SetPerishPercent(percent)
