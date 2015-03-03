@@ -31,6 +31,7 @@ local function fn(Sim)
     inst:AddComponent("inspectable")
     
     inst:AddComponent("stackable")
+	inst.components.stackable.maxsize = 100
     inst:AddComponent("inventoryitem")
 	inst.components.inventoryitem.atlasname = "images/inventoryimages/goldfragment.xml"
 	
