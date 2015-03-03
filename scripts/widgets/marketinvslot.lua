@@ -34,6 +34,12 @@ end
 
 
 function InvSlot:Click(stack_mod)
+	local character = self.owner
+	local slot_number = self.num
+	local container = self.container
+	local container_item = container[slot_number]
+	local loot = SpawnPrefab(container_item.prefab)
+	local displayName = string.lower(loot:GetDisplayName())
 	--print(self.screen)
 	--print("Buying?: "..tostring(self.screen:isBuying()))
 	local itemData = (GetModConfigData(container_item.prefab, KnownModIndex:GetModActualName("Pigman Marketplace")))
@@ -50,22 +56,36 @@ function InvSlot:Click(stack_mod)
 		
 		
 	if self.screen:isSelling() then
-		local character = self.owner
-		local slot_number = self.num
-		local container = self.container
-		local container_item = container[slot_number]
+
 	
 		
 		--print("Item: "..container_item.prefab.." Cost: "..goldCostOfItems.." For "..numberToSpawn)
 		--Check if character has (1) gold
 		local repeating = 1;
 		if stack_mod then
-					
 			if goldCostOfItems == 1 then				
-				character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget.")
+					if itemAmount == 1 then
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName..".")
+					else
+						if(string.sub(displayName,-1,-1) == "s") then
+						--already plural
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName..".")
+						else
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName.."s.")
+						end
+					end
 			else
-				character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets.")
-			end
+					if itemAmount == 1 then
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for "..numberToSpawn.." "..displayName..".")
+					else
+						if(string.sub(loot.GetDisplayName(),-1,-1) == "s") then
+						--already plural
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for "..numberToSpawn.." "..displayName..".")
+						else
+						character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for "..numberToSpawn.." "..displayName.."s.")
+						end
+					end
+		end
 		else
 
 		if character.components.inventory:Has("goldnugget", goldCostOfItems) then
@@ -76,7 +96,6 @@ function InvSlot:Click(stack_mod)
 			-- TMI code here
 			
 			if container_item then
-				local loot = SpawnPrefab(container_item.prefab)
 					if loot.components.stackable then
 						loot.components.stackable:SetStackSize(numberToSpawn)
 					else
