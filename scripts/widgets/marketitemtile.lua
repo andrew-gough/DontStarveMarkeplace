@@ -211,6 +211,10 @@ function ItemTile:GetDescriptionString()
 	end
 end
 
+function ItemTile:GoldToString(goldNumber)
+
+end
+
 function ItemTile:OnGainFocus()
     self:UpdateTooltip()
 end

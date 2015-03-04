@@ -64,21 +64,21 @@ if self.screen:isSelling() then
 	local repeating = 1;
 	if stack_mod then
 		if goldCostOfItems == 1 then				
-			if itemAmount == 1 then
-				character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName..".")
+			if numberToSpawn == 1 then
+				character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for \n"..numberToSpawn.." "..displayName..".")
 			else
 				if(string.sub(displayName,-1,-1) == "s") then
 					--already plural
-					character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName..".")
+					character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for \n"..numberToSpawn.." "..displayName..".")
 				else
-					character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for "..numberToSpawn.." "..displayName.."s.")
+					character.components.talker:Say("This costs "..goldCostOfItems.." gold nugget for \n"..numberToSpawn.." "..displayName.."s.")
 				end
 			end
 		else
-			if itemAmount == 1 then
-				character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for "..numberToSpawn.." "..displayName..".")
+			if numberToSpawn == 1 then
+				character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for \n"..numberToSpawn.." "..displayName..".")
 			else
-				character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for "..numberToSpawn.." "..displayName..".")
+				character.components.talker:Say("This costs "..goldCostOfItems.." gold nuggets for \n"..numberToSpawn.." "..displayName..".")
 			end
 		end
 	else
@@ -126,22 +126,30 @@ else
 	--Check if character has (1) gold
 	local repeating = 1;
 	if stack_mod then
-		if goldCostOfItems == 1 then				
-			if itemAmount == 1 then
-				character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for "..goldNumber..".")
+		if(string.sub(displayName,-1,-1) == "s") then
+			--already plural
+			if math.floor(goldNumber) == 0 then
+				character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..(goldNumber/0.25).." gold fragments.")
 			else
-				if(string.sub(displayName,-1,-1) == "s") then
-					--already plural
-					character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for "..goldNumber..".")
+				if math.floor(goldNumber) == goldNumber then
+					character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..goldNumber.." gold nuggets.")
 				else
-					character.components.talker:Say(numberToSpawn.." "..displayName.."s will sell for "..goldNumber..".")
+					character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..math.floor(goldNumber).." gold nuggets, "..((goldNumber-math.floor(goldNumber))/0.25).." gold fragments.")
 				end
 			end
+			
 		else
-			if itemAmount == 1 then
-				character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for "..goldNumber..".")
+			if(numberToSpawn ~= 1) then
+			displayName = displayName.."s"
+			end
+			if math.floor(goldNumber) == 0 then
+				character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..(goldNumber/0.25).." gold fragments.")
 			else
-				character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for "..goldNumber..".")
+				if math.floor(goldNumber) == goldNumber then
+					character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..goldNumber.." gold nuggets.")
+				else
+					character.components.talker:Say(numberToSpawn.." "..displayName.." will sell for \n"..math.floor(goldNumber).." gold nuggets, "..((goldNumber-math.floor(goldNumber))/0.25).." gold fragments.")
+				end
 			end
 		end
 	else
