@@ -7,11 +7,19 @@ local itemAmount
 
 local ItemTile = Class(Widget, function(self, invitem,owner,screen)
     Widget._ctor(self, "ItemTile")
-    self.item = invitem
+	self.item = invitem -- can be nil
 	self.owner = owner
 	self.screen = screen
 	self.goldAmount = 1
 	self.itemAmount = 1
+	
+
+	if invitem == "emptySpace" then
+		self:Hide()
+		--Do emptySpace stuff
+		return
+	end
+	
 	-- NOT SURE WAHT YOU WANT HERE
 	if invitem.components.inventoryitem == nil then
 		print("NO INVENTORY ITEM COMPONENT"..tostring(invitem.prefab), invitem, owner)
@@ -36,8 +44,8 @@ local ItemTile = Class(Widget, function(self, invitem,owner,screen)
 --    self.spoilage:Hide()
 --    self.spoilage:SetClickable(false)
 	
+	self.image = self:AddChild(Image(invitem.components.inventoryitem:GetAtlas(), invitem.components.inventoryitem:GetImage()))
 	
-    self.image = self:AddChild(Image(invitem.components.inventoryitem:GetAtlas(), invitem.components.inventoryitem:GetImage()))
     --self.image:SetClickable(false)
 	
 --    local owner = self.item.components.inventoryitem.owner

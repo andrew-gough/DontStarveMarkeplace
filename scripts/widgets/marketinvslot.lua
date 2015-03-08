@@ -34,19 +34,26 @@ end
 
 
 function InvSlot:Click(stack_mod)
-local character = self.owner
-local slot_number = self.num
+
 local container = self.container
+local slot_number = self.num
 local container_item = container[slot_number]
+if container_item == "emptySpace" then
+	return
+end
+local character = self.owner
 local loot = SpawnPrefab(container_item.prefab)
 local displayName = string.lower(loot:GetDisplayName())
 --print(self.screen)
 --print("Buying?: "..tostring(self.screen:isBuying()))
+
 local itemData = (GetModConfigData(container_item.prefab, KnownModIndex:GetModActualName("Pigman Marketplace")))
 local goldAmount = 1
 local itemAmount = 1
+print(container_item.prefab)
+print(itemData)
 if itemData ~= "noTrade" then
-goldAmount, itemAmount = string.match(itemData, '(%d+)Gfor(%d+)')
+	goldAmount, itemAmount = string.match(itemData, '(%d+)Gfor(%d+)')
 end
 
 --the number of items to spawn; will get this from config values

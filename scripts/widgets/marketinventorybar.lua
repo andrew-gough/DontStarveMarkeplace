@@ -48,20 +48,30 @@ local Inv = Class(Widget, function(self, owner, screen)
     local strItems = {}
     -- pulls in new items from the itemlist which arn't blueprints
     for k,v in pairs(MARKETITEMLIST) do 
-    	if not contains(strItems, v) and not string.find(v, "blueprint") then
 			if(GetModConfigData(v, KnownModIndex:GetModActualName("Pigman Marketplace"))) == "noTrade" then
 				--Item is disabled in config
 			else
 				--Item is enabled in config
+				
 				table.insert(strItems, v)
 			end
-    	end
+			print(v)
+			print(#strItems)
     end
     
 	
 	-- for all the items, turn them from a string into the prefab in the self.inventory table
     local i = 0
 	for k,v in pairs(strItems) do
+			if v == "emptySpace" then
+			--print(item)
+			--	if item.components and item.components.inventoryitem then
+					self.inventory[i] = v
+					i = i + 1
+			--	else
+			--		item:Remove()
+			--	end
+			end
 	
 			local item = SpawnPrefab(v)
 			if item ~= nil then
@@ -136,7 +146,7 @@ function Inv:Rebuild()
     local maxwidth = (W * NUM_COLUMS)
 	
 	local positions = 0
-    for k = self.currentpage * MAXSLOTS, math.min(num_slots-1, (self.currentpage + 1) * MAXSLOTS - 1)+1 do
+    for k = self.currentpage * MAXSLOTS, math.min(num_slots, (self.currentpage + 1) * MAXSLOTS - 1) do
     	local height = math.floor(positions / NUM_COLUMS) * H
         local slot = InvSlot(k, HUD_ATLAS, "inv_slot.tex", self.owner, self.inventory,self.screen)
         self.inv[k] = self.slots:AddChild(slot)
@@ -194,10 +204,18 @@ end
 
 function Inv:Delete()
 	for k,v in pairs(self.inventory) do
-    	v:Remove()
+    	if v ~= "emptySpace" then
+			v:Remove()
+		else
+			v=nil
+		end
     end
 	for k,v in pairs(self.inv) do
-    	v:Kill()
+		if v ~= "emptySpace" then
+			v:Kill()
+		else
+			v=nil
+		end
     end
 end
 
