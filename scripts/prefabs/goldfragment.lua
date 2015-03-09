@@ -1,8 +1,7 @@
-local assets=
+local Assets=
 {
 	Asset("ANIM", "anim/goldfragment.zip"),
 	Asset("ATLAS", "images/inventoryimages/goldfragment.xml"),
-	Asset("IMAGE", "images/inventoryimages/goldfragment.tex" ),
 }
 
 
@@ -16,15 +15,16 @@ local function fn(Sim)
 	local inst = CreateEntity()
 	inst.entity:AddTransform()
 	inst.entity:AddAnimState()
-	inst.entity:AddSoundEmitter()
+	--inst.entity:AddSoundEmitter()
 	inst.entity:AddPhysics()
+	
     MakeInventoryPhysics(inst)
 
-	inst.AnimState:SetBloomEffectHandle( "shaders/anim.ksh" )    
+	--inst.AnimState:SetBloomEffectHandle( "shaders/anim.ksh" )    
 	
     inst.AnimState:SetBank("goldfragmentbank")
     inst.AnimState:SetBuild("goldfragment")
-    inst.AnimState:PlayAnimation("idle")
+    inst.AnimState:PlayAnimation("idle", true)
 
 
     
@@ -32,6 +32,7 @@ local function fn(Sim)
     
     inst:AddComponent("stackable")
 	inst.components.stackable.maxsize = 100
+	
     inst:AddComponent("inventoryitem")
 	inst.components.inventoryitem.atlasname = "images/inventoryimages/goldfragment.xml"
 	
@@ -39,4 +40,4 @@ local function fn(Sim)
     return inst
 end
 
-return Prefab( "common/inventory/goldfragment", fn, assets) 
+return Prefab( "common/inventory/goldfragment", fn, Assets) 

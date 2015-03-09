@@ -1,5 +1,9 @@
 PrefabFiles = {"marketplace","goldfragment"}
 
+Assets = {
+	Asset("ATLAS","images/inventoryimages/goldfragment.xml"),
+	Asset("IMAGE","images/inventoryimages/goldfragment.tex"),
+}
 
 		-- Code from TMI Items
 	
@@ -29,10 +33,12 @@ PrefabFiles = {"marketplace","goldfragment"}
 		local goldfragment = GLOBAL.Recipe("goldfragment",{ Ingredient("goldnugget", 1)},                     
         RECIPETABS.REFINE, TECH.NONE,nil,nil,nil,4)
         goldfragment.atlas = "images/inventoryimages/goldfragment.xml"
+		goldfragment.texture = "images/inventoryimages/goldfragment.tex"
 
 		
 		local goldnugget = GLOBAL.Recipe("goldnugget",{ Ingredient("goldfragment", 4)},                     
         RECIPETABS.REFINE, TECH.NONE)
+		--goldfragment.atlas = "images/inventoryimages/goldfragment.xml"
 		
 		
 		local config_CraftingDifficulty  = GetModConfigData("recipeDifficulty")
